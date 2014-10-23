@@ -1,0 +1,323 @@
+
+###########################################################################
+# CASO 1: [AVISO] Han pasado X dias sin que la oportunidad se modifique
+###########################################################################
+-
+    Modificar fecha de modificacion de la oportunidad crm_lead_1
+-
+    !python {model: crm.lead}: |
+        date = '2014-01-01 08:00:00'
+        cr.execute("UPDATE crm_lead SET write_date = '%s' WHERE id = %s" % (date, ref("crm_lead_1")))
+
+-
+    Activar aviso oportunidad sin modificacion
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_1"))
+        self.pool.get('warning.messaging').to_active(cr, uid, [warning_mess.id], {})
+
+-
+    Comprobar que se ha activado
+-
+    !assert {model: warning.messaging, id: warning_messaging_1}:
+        - state == 'active'
+
+-
+    Desactivar el cron creado
+-
+    !python {model: ir.cron}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_1"))
+        self.pool.get('ir.cron').write(cr, uid, [warning_mess.cron_id.id], {'active': False})
+-
+    Lanzar el cron asociado al aviso
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_1"))
+
+        context['active_ids'] = warning_mess.cron_id.id
+        self.pool.get('execute_cron_now.wizard').action_accept(cr, uid, warning_mess.cron_id.id, context)
+
+-
+    Comprobar que se ha creado el mensaje de alerta al usuario (ahora)
+-
+    !python {model: warning.messaging}: |
+        from datetime import datetime
+        import datetime as dt
+
+        try:
+            mail_mess_ids = self.pool.get('mail.message').search(cr, uid, [('res_id', '=', ref("crm_lead_1")), 
+                                                                           ('type', '=', 'notification'), 
+                                                                           ('body', 'ilike', '%Han pasado X dias sin que la oportunidad se modifiq%'), 
+                                                                           ('create_date', '<', str(datetime.now())), 
+                                                                           ('create_date', '>', str((datetime.now() - dt.timedelta(minutes=1)))), 
+                                                                            ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(mail_mess_ids) > 0, 'No esta comprobando correctamente, no se ha generado el mensaje.'
+
+-
+    Lanzar de nuevo el cron asociado al aviso
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_1"))
+
+        context['active_ids'] = warning_mess.cron_id.id
+        self.pool.get('execute_cron_now.wizard').action_accept(cr, uid, warning_mess.cron_id.id, context)
+
+-
+    Comprobar que funciona las siguientes veces, es decir, comprobar que al lanzar otra vez el cron de este aviso, no crea de nuevo el mensaje
+-
+    !python {model: warning.messaging}: |
+        from datetime import datetime
+        import datetime as dt
+
+        try:
+            mail_mess_ids = self.pool.get('mail.message').search(cr, uid, [('res_id', '=', ref("crm_lead_1")), 
+                                                                           ('type', '=', 'notification'), 
+                                                                           ('body', 'ilike', '%Han pasado X dias sin que la oportunidad se modifiq%'), 
+                                                                           ('create_date', '<', str(datetime.now())), 
+                                                                           ('create_date', '>', str((datetime.now() - dt.timedelta(minutes=1)))), 
+                                                                            ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(mail_mess_ids) <= 1, 'No esta comprobando correctamente, se ha vuelto a generar el mensaje.'
+
+
+##########################################################################################
+# CASO 2: [AVISO] Han pasado X dias desde envío de presupuesto sin respuesta del cliente.
+##########################################################################################
+-
+    Modificar fecha de modificacion del pedido sale_order_1
+-
+    !python {model: sale.order}: |
+        date = '2014-01-01 08:00:00'
+        cr.execute("UPDATE sale_order SET write_date = '%s' WHERE id = %s" % (date, ref("sale_order_1")))
+
+-
+    Activar aviso presupuesto sin respuesta
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_2"))
+        self.pool.get('warning.messaging').to_active(cr, uid, [warning_mess.id], {})
+
+-
+    Comprobar que se ha activado
+-
+    !assert {model: warning.messaging, id: warning_messaging_2}:
+        - state == 'active'
+
+-
+    Desactivar el cron creado
+-
+    !python {model: ir.cron}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_2"))
+        self.pool.get('ir.cron').write(cr, uid, [warning_mess.cron_id.id], {'active': False})
+-
+    Lanzar el cron asociado al aviso
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_2"))
+
+        context['active_ids'] = warning_mess.cron_id.id
+        self.pool.get('execute_cron_now.wizard').action_accept(cr, uid, warning_mess.cron_id.id, context)
+
+-
+    Comprobar que se ha creado el mensaje de alerta al usuario (ahora) + la llamada programada + la reunion
+-
+    !python {model: warning.messaging}: |
+        from datetime import datetime
+        import datetime as dt
+
+        now_str = str(datetime.now())
+        before_str = str((datetime.now() - dt.timedelta(minutes=1)))
+        try:
+
+            # Mensaje de alerta
+            mail_mess_ids = self.pool.get('mail.message').search(cr, uid, [('res_id', '=', ref("sale_order_1")), 
+                                                                           ('type', '=', 'notification'), 
+                                                                           ('body', 'ilike', '%Han pasado X dias desde envío de presupuesto sin respuesta del cli%'), 
+                                                                           ('create_date', '<', now_str), 
+                                                                           ('create_date', '>', before_str), 
+                                                                           ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(mail_mess_ids) > 0, 'No esta comprobando correctamente, no se ha generado el mensaje.'
+
+        try:
+            # Llamada
+            phonecall_ids = self.pool.get('crm.phonecall').search(cr, uid, [('state', '=', 'open'),
+                                                                            ('name', 'ilike', '%Llamada generada desde presupuesto%'),
+                                                                            ('create_date', '<', now_str), 
+                                                                            ('create_date', '>', before_str), 
+                                                                            ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(phonecall_ids) > 0, 'No esta comprobando correctamente, no se ha generado la llamada.'
+
+        try:
+            # Reunion
+            meeting_ids = self.pool.get('calendar.event').search(cr, uid, [('state', '=', 'draft'),
+                                                                           ('name', 'ilike', '%Reunion generada desde presupuesto%'),
+                                                                           ('create_date', '<', now_str), 
+                                                                           ('create_date', '>', before_str), 
+                                                                           ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(meeting_ids) > 0, 'No esta comprobando correctamente, no se ha generado la reunion.'
+
+-
+    Lanzar de nuevo el cron asociado al aviso
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_2"))
+
+        context['active_ids'] = warning_mess.cron_id.id
+        self.pool.get('execute_cron_now.wizard').action_accept(cr, uid, warning_mess.cron_id.id, context)
+
+-
+    Comprobar que funciona las siguientes veces, es decir, comprobar que al lanzar otra vez el cron de este aviso, no crea de nuevo ni el mensaje, ni la llamada ni la reunion
+-
+    !python {model: warning.messaging}: |
+        from datetime import datetime
+        import datetime as dt
+
+        now_str = str(datetime.now())
+        before_str = str((datetime.now() - dt.timedelta(minutes=1)))
+        try:
+
+            # Mensaje de alerta
+            mail_mess_ids = self.pool.get('mail.message').search(cr, uid, [('res_id', '=', ref("sale_order_1")), 
+                                                                           ('type', '=', 'notification'), 
+                                                                           ('body', 'ilike', '%Han pasado X dias desde envío de presupuesto sin respuesta del cli%'), 
+                                                                           ('create_date', '<', now_str), 
+                                                                           ('create_date', '>', before_str), 
+                                                                           ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(mail_mess_ids) <= 1, 'No esta comprobando correctamente, se ha vuelto a generar el mensaje.'
+
+        try:
+            # Llamada
+            phonecall_ids = self.pool.get('crm.phonecall').search(cr, uid, [('state', '=', 'open'),
+                                                                            ('name', 'ilike', '%Llamada generada desde presupuesto%'),
+                                                                            ('create_date', '<', now_str), 
+                                                                            ('create_date', '>', before_str), 
+                                                                            ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(phonecall_ids) <= 1, 'No esta comprobando correctamente, se ha vuelto a generar la llamada.'
+
+        try:
+            # Reunion
+            meeting_ids = self.pool.get('calendar.event').search(cr, uid, [('state', '=', 'draft'),
+                                                                           ('name', 'ilike', '%Reunion generada desde presupuesto%'),
+                                                                           ('create_date', '<', now_str), 
+                                                                           ('create_date', '>', before_str), 
+                                                                           ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(meeting_ids) <= 1, 'No esta comprobando correctamente, se ha vuelto a generar la reunion.'
+
+##########################################################################################
+# CASO 3: [AVISO] Cancelaron el presupuesto, pero el ingreso esperado es alto.
+##########################################################################################
+-
+    Modificar fecha de modificacion del pedido sale_order_2
+-
+    !python {model: sale.order}: |
+        date = '2014-01-01 08:00:00'
+        cr.execute("UPDATE sale_order SET write_date = '%s' WHERE id = %s" % (date, ref("sale_order_2")))
+-
+    Comprobar que el importe total del pedido supera los 100 euros
+-
+    !assert {model: sale.order, id: sale_order_2}:
+        - amount_total >= 100
+
+-
+    Activar aviso presupuesto cancelado con ingresos altos esperados
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_3"))
+        self.pool.get('warning.messaging').to_active(cr, uid, [warning_mess.id], {})
+
+-
+    Comprobar que se ha activado
+-
+    !assert {model: warning.messaging, id: warning_messaging_3}:
+        - state == 'active'
+
+-
+    Desactivar el cron creado
+-
+    !python {model: ir.cron}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_3"))
+        self.pool.get('ir.cron').write(cr, uid, [warning_mess.cron_id.id], {'active': False})
+-
+    Lanzar el cron asociado al aviso
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_3"))
+
+        context['active_ids'] = warning_mess.cron_id.id
+        self.pool.get('execute_cron_now.wizard').action_accept(cr, uid, warning_mess.cron_id.id, context)
+
+-
+    Comprobar que se ha creado una oportunidad
+-
+    !python {model: warning.messaging}: |
+        from datetime import datetime
+        import datetime as dt
+
+        now_str = str(datetime.now())
+        before_str = str((datetime.now() - dt.timedelta(minutes=1)))
+        try:
+
+            # Oportunidad
+            opportunity_ids = self.pool.get('crm.lead').search(cr, uid, [('type', '=', 'opportunity'),
+                                                                            ('name', 'ilike', '%Oportunidad generada desde presupuesto%'),
+                                                                            ('create_date', '<', now_str), 
+                                                                            ('create_date', '>', before_str), 
+                                                                            ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(opportunity_ids) > 0, 'No esta comprobando correctamente, no se ha generado la oportunidad.'
+
+-
+    Lanzar de nuevo el cron asociado al aviso
+-
+    !python {model: warning.messaging}: |
+        warning_mess = self.pool.get('warning.messaging').browse(cr, uid, ref("warning_messaging_3"))
+
+        context['active_ids'] = warning_mess.cron_id.id
+        self.pool.get('execute_cron_now.wizard').action_accept(cr, uid, warning_mess.cron_id.id, context)
+
+-
+    Comprobar que funciona las siguientes veces, es decir, comprobar que al lanzar otra vez el cron de este aviso, no crea de nuevo la oportunidad
+-
+    !python {model: warning.messaging}: |
+        from datetime import datetime
+        import datetime as dt
+
+        now_str = str(datetime.now())
+        before_str = str((datetime.now() - dt.timedelta(minutes=1)))
+        try:
+
+            # Oportunidad
+            opportunity_ids = self.pool.get('crm.lead').search(cr, uid, [('type', '=', 'opportunity'),
+                                                                            ('name', 'ilike', '%Oportunidad generada desde presupuesto%'),
+                                                                            ('create_date', '<', now_str), 
+                                                                            ('create_date', '>', before_str), 
+                                                                            ])
+        except Exception, e:
+            assert False, 'Error al hacer el search.'
+
+        assert len(opportunity_ids) <= 1, 'No esta comprobando correctamente, se ha vuelto a generar la oportunidad.'
