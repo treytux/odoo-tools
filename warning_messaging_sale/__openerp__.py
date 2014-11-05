@@ -20,25 +20,26 @@
 ################################################################################
 
 {
-    'name': 'warning_messaging',
+    'name': 'warning_messaging_sale',
     'category': 'Warning',
-    'summary': 'Warning messaging',
+    'summary': 'Warning messaging sale',
     'version': '0.1',
     'description': """
-Module to manage automated messaging alerts.
+Module to manage automated messaging alerts for sale orders.
     """,
     'author': 'Trey Kilobytes de Soluciones (www.trey.es)',
     'depends': [
         'base',
+        'sale',
     ],
-    'data': [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'views/warning_view.xml',
-        'views/menu.xml',
-        'views/data.xml',
+    'data': [],
+    'demo': [
+        'views/demo.xml',
     ],
-    'demo': [],
-    'test': [],
+    'test': [
+        'test/sale_order.yml',
+        'test/warning_condition.yml',
+        'test/warning_messaging.yml',
+    ],
     'installable': True,
 }

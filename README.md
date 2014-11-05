@@ -9,3 +9,7 @@ Permite lanzar una acción planificada (cron) de forma manual desde un asistente
 ```warning_messaging ```
 ====
 Permite gestionar avisos de mensajería automáticos dentro de odoo.
+
+```warning_messaging_sale ```
+====
+Permite gestionar avisos de mensajería automáticos dentro de odoo para pedidos de venta.

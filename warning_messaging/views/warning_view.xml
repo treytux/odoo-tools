@@ -2,54 +2,6 @@
 <openerp>
     <data>
 
-        <!-- Warning object type -->
-<!--         <record id="tree_warning_object_type" model="ir.ui.view">
-            <field name="name">warning.object.type.tree</field>
-            <field name="model">warning.object.type</field>
-            <field name="arch" type="xml">
-                <tree string="Warning object type">
-                    <field name="name"/>
-                    <field name="model_id"/>
-                    <field name="active"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="search_warning_object_type" model="ir.ui.view">
-            <field name="name">warning.object.type.search</field>
-            <field name="model">warning.object.type</field>
-            <field name="arch" type="xml">
-                <search string="Warning object type">
-                    <field name="name"/>
-                    <field name="model_id"/>
-                    <field name="active"/>
-                </search>
-            </field>
-        </record>
-
-        <record id="form_warning_object_type" model="ir.ui.view">
-            <field name="name">warning.object.type.form</field>
-            <field name="model">warning.object.type</field>
-            <field name="arch" type="xml">
-                <form string="Warning object type">
-                    <field name="name"/>
-                    <field name="model_id"/>
-                    <field name="active"/>
-                </form>
-            </field>
-        </record>
-
-        <record id="action_warning_object_type" model="ir.actions.act_window">
-            <field name="name">Warning object type</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">warning.object.type</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="search_warning_object_type"/>
-        </record>
-
-
- -->
         <!-- Warning messaging -->
         <record id="tree_warning_messaging" model="ir.ui.view">
             <field name="name">warning.messaging.tree</field>
@@ -75,14 +27,10 @@
                     <field name="body"/>
                     <field name="cron_id"/>
                     <field name="state"/>
-
-<!--                     <newline />
+                    <newline />
                     <group expand="0" string="Group By...">
-                        <filter string="Date" domain="[]" context="{'group_by':'start_date'}" />
-                        <filter string="Patient" domain="[]" context="{'group_by':'patient_id'}" />
-                        <filter string="Doctor" domain="[]" context="{'group_by':'doctor_id'}" />
-                        <filter string="Location" domain="[]" context="{'group_by':'location_id'}" />
-                    </group> -->
+                        <filter string="name" domain="[]" context="{'group_by':'name'}" />
+                    </group>
                 </search>
             </field>
         </record>
@@ -92,24 +40,20 @@
             <field name="model">warning.messaging</field>
             <field name="arch" type="xml">
                 <form string="Warning messaging">
-                    <sheet string="Warning messaging Sheet">
-                        <!-- <div class="oe_title">
-                            <h1>
-                                <label string="New appointment" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                                <field name="name" attrs="{'invisible': [('state', '=', 'draft')]}"/>
-                            </h1>
-                        </div>
-                        <group col="4">
-                            <field name="patient_id"/>
-                            <field name="type_id"/>
-                        </group> -->
+<!--
+                    <header>
+                        <button name="STATE_BUTTON" states="draf,done" string="Print" class="oe_highlight" groups="base.group_user"/>
+                        <button name="ACTION_BUTTON" states="pending" string="Print" type="object" groups="base.group_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft, done" statusbar_colors='{"draft":"blue","done":"red"}'/>
+                    </header>
+ -->
+                     <sheet string="Warning messaging Sheet">
                         <notebook>
                             <page name="information" string="Information">
                                 <group colspan="4">
                                     <group>
                                         <field name="name"/>
                                         <field name="model_id"/>
-                                        <field name="function_name"/>
                                         <field name="body"/>
                                         <field name="cron_id"/>
                                     </group>
@@ -122,7 +66,7 @@
                                         <button name="to_inactive"
                                                 string="Desactivar (DESACTIVA CRON)"
                                                 type="object"
-                                                states="active"/>                        
+                                                states="active"/>
                                     </group>
                                 </group>
                                 <group colspan="4" string="Condiciones">
@@ -148,76 +92,17 @@
             <field name="search_view_id" ref="search_warning_messaging"/>
         </record>
 
-    <!-- warning.period -->
-        <record id="tree_warning_period" model="ir.ui.view">
-            <field name="name">warning.period.tree</field>
-            <field name="model">warning.period</field>
-            <field name="arch" type="xml">
-                <tree string="Warning period">
-                    <field name="name"/>
-                    <field name="days"/>
-                    <field name="months"/>
-                    <field name="years"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="search_warning_period" model="ir.ui.view">
-            <field name="name">warning.period.search</field>
-            <field name="model">warning.period</field>
-            <field name="arch" type="xml">
-                <search string="Warning period">
-                    <field name="name"/>
-                    <field name="days"/>
-                    <field name="months"/>
-                    <field name="years"/>
-                </search>
-            </field>
-        </record>
-
-        <record id="form_warning_period" model="ir.ui.view">
-            <field name="name">warning.period.form</field>
-            <field name="model">warning.period</field>
-            <field name="arch" type="xml">
-                <form string="Warning period">
-                    <sheet string="Warning period Sheet">
-                        <notebook>
-                            <page name="information" string="Information">
-                                <group colspan="4">
-                                    <group>
-                                        <field name="name"/>
-                                        <field name="days"/>
-                                        <field name="months"/>
-                                        <field name="years"/>
-                                    </group>
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
-
-                </form>
-            </field>
-        </record>
-
-        <record id="action_warning_period" model="ir.actions.act_window">
-            <field name="name">Warning period</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">warning.period</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="search_warning_period"/>
-        </record>
-
-    <!-- warning.condition -->
+        <!-- warning.condition -->
         <record id="tree_warning_condition" model="ir.ui.view">
             <field name="name">warning.condition.tree</field>
             <field name="model">warning.condition</field>
             <field name="arch" type="xml">
                 <tree string="Warning condition">
                     <field name="name"/>
-                    <field name="state"/>
-                    <field name="period_id"/>
-                    <field name="amount"/>
+                    <field name="model_id"/>
+                    <field name="field_id"/>
+                    <field name="condition"/>
+                    <field name="value"/>
                 </tree>
             </field>
         </record>
@@ -228,9 +113,10 @@
             <field name="arch" type="xml">
                 <search string="Warning condition">
                     <field name="name"/>
-                    <field name="state"/>
-                    <field name="period_id"/>
-                    <field name="amount"/>
+                    <field name="model_id"/>
+                    <field name="field_id"/>
+                    <field name="condition"/>
+                    <field name="value"/>
                 </search>
             </field>
         </record>
@@ -246,14 +132,10 @@
                                 <group colspan="4">
                                     <group>
                                         <field name="name"/>
-                                    </group>
-                                </group>
-                                <group colspan="4">
-                                    <group>
-                                        <label string="Rellenar una de las dos opciones" colspan="4"/>
-                                        <field name="state"/>
-                                        <field name="period_id"/>
-                                        <field name="amount"/>
+                                        <field name="model_id"/>
+                                        <field name="field_id" domain="[('model_id', '=', model_id)]"/>
+                                        <field name="condition"/>
+                                        <field name="value"/>
                                     </group>
                                 </group>
                             </page>
@@ -281,6 +163,7 @@
                 <tree string="Warning action">
                     <field name="name"/>
                     <field name="ttype"/>
+                    <field name="active"/>
                 </tree>
             </field>
         </record>
@@ -292,6 +175,7 @@
                 <search string="Warning action">
                     <field name="name"/>
                     <field name="ttype"/>
+                    <field name="active"/>
                 </search>
             </field>
         </record>
@@ -308,6 +192,7 @@
                                     <group>
                                         <field name="name"/>
                                         <field name="ttype"/>
+                                        <field name="active"/>
                                     </group>
                                 </group>
                             </page>
