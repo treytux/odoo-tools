@@ -31,6 +31,7 @@ Module to manage automated messaging alerts for crm.
     'depends': [
         'base',
         'crm',
+        'sale',
         'warning_messaging',
     ],
     'data': [
@@ -41,8 +42,8 @@ Module to manage automated messaging alerts for crm.
         'views/demo.xml',
     ],
     'test': [
-        # 'test/warning_condition.yml',
-        # 'test/warning_messaging.yml',
+        'test/warning_condition.yml',
+        'test/warning_messaging.yml',
     ],
     'installable': True,
 }
