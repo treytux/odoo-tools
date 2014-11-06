@@ -19,27 +19,4 @@
 #
 ################################################################################
 
-{
-    'name': 'warning_messaging',
-    'category': 'Warning',
-    'summary': 'Warning messaging',
-    'version': '0.1',
-    'description': """
-Module to manage automated messaging alerts.
-    """,
-    'author': 'Trey Kilobytes de Soluciones (www.trey.es)',
-    'depends': [
-        'base',
-    ],
-    'data': [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'views/warning_view.xml',
-        'views/menu.xml',
-    ],
-    'demo': [
-        'views/demo.xml',
-    ],
-    'test': [],
-    'installable': True,
-}
+from . import models

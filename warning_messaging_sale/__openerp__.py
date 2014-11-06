@@ -31,6 +31,7 @@ Module to manage automated messaging alerts for sale orders.
     'depends': [
         'base',
         'sale',
+        'warning_messaging',
     ],
     'data': [],
     'demo': [

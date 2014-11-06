@@ -20,26 +20,29 @@
 ################################################################################
 
 {
-    'name': 'warning_messaging',
+    'name': 'warning_messaging_crm',
     'category': 'Warning',
-    'summary': 'Warning messaging',
+    'summary': 'Warning messaging crm',
     'version': '0.1',
     'description': """
-Module to manage automated messaging alerts.
+Module to manage automated messaging alerts for crm.
     """,
     'author': 'Trey Kilobytes de Soluciones (www.trey.es)',
     'depends': [
         'base',
+        'crm',
+        'warning_messaging',
     ],
     'data': [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'views/warning_view.xml',
-        'views/menu.xml',
+        # @ TODO Quitar y mover a demo
+        # 'views/data.xml',
     ],
     'demo': [
         'views/demo.xml',
     ],
-    'test': [],
+    'test': [
+        # 'test/warning_condition.yml',
+        # 'test/warning_messaging.yml',
+    ],
     'installable': True,
 }

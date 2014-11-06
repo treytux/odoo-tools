@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
+        <!-- Usuario test_user -->
+        <record id="res_partner_sale_0" model="res.partner">
+            <field name="name">test_user_sale</field>
+            <field name="customer" eval="False"/>
+            <field name="email">test_user_sale@prueba.com</field>
+        </record>
+        <record id="res_users_0" model="res.users">
+            <field name="name">test_user_sale</field>
+            <field name="login">test_user_sale</field>
+            <field name="password">a</field>
+            <!-- <field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman_all_leads')])]"/> -->
+            <field name="partner_id" ref="res_partner_sale_0"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cliente prueba -->
+        <record id="res_partner_sale_1" model="res.partner">
+            <field name="name">cliente prueba sale</field>
+            <field name="customer" eval="True"/>
+            <field name="email">prueba_sale@prueba.com</field>
+        </record>
 
         <!-- AVISO 1 -->
         <!-- Aviso presupuesto sin respuesta -->
@@ -77,33 +98,12 @@
             <field name="active">True</field>
         </record>
 
-        <!-- EJEMPLOS -->
-        <!-- Usuario test_user -->
-        <record id="res_partner_0" model="res.partner">
-            <field name="name">test_user</field>
-            <field name="customer" eval="False"/>
-            <field name="email">test_user@prueba.com</field>
-        </record>
-        <record id="res_users_0" model="res.users">
-            <field name="name">test_user</field>
-            <field name="login">test_user</field>
-            <field name="password">a</field>
-            <field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman_all_leads')])]"/>
-            <field name="partner_id" ref="res_partner_0"/>
-            <field name="active" eval="True"/>
-        </record>
-
-        <!-- Cliente prueba -->
-        <record id="res_partner_1" model="res.partner">
-            <field name="name">cliente prueba</field>
-            <field name="customer" eval="True"/>
-            <field name="email">prueba@prueba.com</field>
-        </record>
+        <!-- PRESUPUESTOS -->
         <!-- Presupuesto venta en borrador. Comercial: test_user-->
         <record id="sale_order_1" model="sale.order">
-            <field name="partner_id" ref="res_partner_1"/>
-            <field name="partner_invoice_id" ref="res_partner_1"/>
-            <field name="partner_shipping_id" ref="res_partner_1"/>
+            <field name="partner_id" ref="res_partner_sale_1"/>
+            <field name="partner_invoice_id" ref="res_partner_sale_1"/>
+            <field name="partner_shipping_id" ref="res_partner_sale_1"/>
             <field name="user_id" ref="res_users_0"/>
             <field name="pricelist_id" ref="product.list0"/>
             <field name="section_id" ref="sales_team.section_sales_department"/>
@@ -119,9 +119,9 @@
 
         <!-- Presupuesto venta en borrador. Comercial: base.user_root-->
         <record id="sale_order_2" model="sale.order">
-            <field name="partner_id" ref="res_partner_1"/>
-            <field name="partner_invoice_id" ref="res_partner_1"/>
-            <field name="partner_shipping_id" ref="res_partner_1"/>
+            <field name="partner_id" ref="res_partner_sale_1"/>
+            <field name="partner_invoice_id" ref="res_partner_sale_1"/>
+            <field name="partner_shipping_id" ref="res_partner_sale_1"/>
             <field name="user_id" ref="base.user_root"/>
             <field name="pricelist_id" ref="product.list0"/>
             <field name="section_id" ref="sales_team.section_sales_department"/>
@@ -137,9 +137,9 @@
 
         <!-- Presupuesto venta en borrador. Comercial: base.user_root-->
         <record id="sale_order_3" model="sale.order">
-            <field name="partner_id" ref="res_partner_1"/>
-            <field name="partner_invoice_id" ref="res_partner_1"/>
-            <field name="partner_shipping_id" ref="res_partner_1"/>
+            <field name="partner_id" ref="res_partner_sale_1"/>
+            <field name="partner_invoice_id" ref="res_partner_sale_1"/>
+            <field name="partner_shipping_id" ref="res_partner_sale_1"/>
             <field name="user_id" ref="base.user_root"/>
             <field name="pricelist_id" ref="product.list0"/>
             <field name="section_id" ref="sales_team.section_sales_department"/>
@@ -152,8 +152,6 @@
             <field name="product_uos_qty">1</field>
             <field name="price_unit">10.00</field>
         </record>
-
-
 
     </data>
 </openerp>
