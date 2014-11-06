@@ -212,13 +212,14 @@ class WarningMessaging(models.Model):
         objs = model_obj.search(domain)
         if objs:
             for action in self.action_ids:
-                method = 'do_%s' % action.ttype
-                if hasattr(self, method):
-                    fnc = getattr(self, method)
-                    fnc(objs)
-                else:
-                    _log.error('Unknow action type %s for '
-                               'warning %s' % (action.ttype, self.name))
+                if action.active is True:
+                    method = 'do_%s' % action.ttype
+                    if hasattr(self, method):
+                        fnc = getattr(self, method)
+                        fnc(objs)
+                    else:
+                        _log.error('Unknow action type %s for '
+                                   'warning %s' % (action.ttype, self.name))
         else:
             _log.error('Warning "%s" not satisfied conditions' % (self.name))
 

@@ -10,8 +10,6 @@
                 <tree string="Warning messaging">
                     <field name="name"/>
                     <field name="model_id"/>
-                    <field name="body"/>
-                    <field name="cron_id"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -24,12 +22,11 @@
                 <search string="Warning messaging">
                     <field name="name"/>
                     <field name="model_id"/>
-                    <field name="body"/>
-                    <field name="cron_id"/>
                     <field name="state"/>
                     <newline />
                     <group expand="0" string="Group By...">
-                        <filter string="name" domain="[]" context="{'group_by':'name'}" />
+                        <filter string="Model" domain="[]" context="{'group_by':'model_id'}"/>
+                        <filter string="State" domain="[]" context="{'group_by':'state'}"/>
                     </group>
                 </search>
             </field>
@@ -40,13 +37,11 @@
             <field name="model">warning.messaging</field>
             <field name="arch" type="xml">
                 <form string="Warning messaging">
-<!--
                     <header>
-                        <button name="STATE_BUTTON" states="draf,done" string="Print" class="oe_highlight" groups="base.group_user"/>
-                        <button name="ACTION_BUTTON" states="pending" string="Print" type="object" groups="base.group_user"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft, done" statusbar_colors='{"draft":"blue","done":"red"}'/>
+                        <button name="to_active" states="inactive" string="To active" type="object" class="oe_highlight" groups="base.group_user"/>
+                        <button name="to_inactive" states="active" string="To inactive" type="object" groups="base.group_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="active, inactive" statusbar_colors='{"inactive":"blue","active":"red"}'/>
                     </header>
- -->
                      <sheet string="Warning messaging Sheet">
                         <notebook>
                             <page name="information" string="Information">
@@ -56,17 +51,6 @@
                                         <field name="model_id"/>
                                         <field name="body"/>
                                         <field name="cron_id"/>
-                                    </group>
-                                    <group>
-                                        <field name="state"/>
-                                        <button name="to_active"
-                                                string="Activar (CREA/ACTIVA CRON)"
-                                                type="object"
-                                                states="inactive"/>
-                                        <button name="to_inactive"
-                                                string="Desactivar (DESACTIVA CRON)"
-                                                type="object"
-                                                states="active"/>
                                     </group>
                                 </group>
                                 <group colspan="4" string="Condiciones">
@@ -117,6 +101,10 @@
                     <field name="field_id"/>
                     <field name="condition"/>
                     <field name="value"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Model" domain="[]" context="{'group_by':'model_id'}"/>
+                        <filter string="Field" domain="[]" context="{'group_by':'field_id'}"/>
+                    </group>
                 </search>
             </field>
         </record>
@@ -176,6 +164,10 @@
                     <field name="name"/>
                     <field name="ttype"/>
                     <field name="active"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Type" domain="[]" context="{'group_by':'ttype'}"/>
+                        <filter string="Active" domain="[]" context="{'group_by':'active'}"/>
+                    </group>
                 </search>
             </field>
         </record>
