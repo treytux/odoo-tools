@@ -20,9 +20,9 @@
 ###############################################################################
 
 {
-    'name': 'cron_ir_execute_now',
+    'name': 'Cron execute now',
     'category': 'Cron',
-    'summary': 'cron_ir_execute_now',
+    'summary': 'Cron execute at same time',
     'version': '0.1',
     'description': """
         This module allows to launch a planned action (cron)
@@ -34,16 +34,6 @@
     ],
     'data': [
         'views/execute_now_wizard.xml',
-    ],
-    'demo': [
-    ],
-    'test': [
-    ],
-    'qweb': [
-    ],
-    'js': [
-    ],
-    'css': [
     ],
     'installable': True,
 }

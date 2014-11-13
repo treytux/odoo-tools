@@ -2,7 +2,7 @@
 ====
 Este modulo elimina las referencias a Odoo de la aplicación.
 
-```cron_ir_execute_now ```
+```cron_execute_now ```
 ====
 Permite lanzar una acción planificada (cron) de forma manual desde un asistente.
 
