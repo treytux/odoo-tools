@@ -19,9 +19,6 @@
 #
 ###############################################################################
 from openerp import models, api
-import logging
-
-_log = logging.getLogger(__name__)
 
 
 class WarningMessaging(models.Model):

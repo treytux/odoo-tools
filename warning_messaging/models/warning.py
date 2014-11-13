@@ -19,8 +19,6 @@
 #
 ###############################################################################
 from openerp import api, models, fields, exceptions
-import time
-import datetime
 import logging
 
 _log = logging.getLogger(__name__)
