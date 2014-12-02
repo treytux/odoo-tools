@@ -21,6 +21,10 @@
 from openerp import api, models, fields, exceptions
 import logging
 
+# Estas librerias se necesitan para evaluar las condiciones
+import time
+import datetime
+
 _log = logging.getLogger(__name__)
 
 

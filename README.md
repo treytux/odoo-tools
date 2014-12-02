@@ -17,3 +17,7 @@ Permite gestionar avisos de mensajería automáticos dentro de odoo para pedidos
 ```warning_messaging_crm ```
 ====
 Permite gestionar avisos de mensajería automáticos dentro de odoo para crm.
+
+```period ```
+====
+Permite gestionar periodos.
