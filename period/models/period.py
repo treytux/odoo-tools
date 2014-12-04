@@ -19,20 +19,28 @@
 #
 ###############################################################################
 from openerp import api, models, fields
-import logging
+from dateutil.relativedelta import relativedelta
 
-_log = logging.getLogger(__name__)
-
-
-# @ TODO Anadir horas, min y seg
 
 class Period(models.Model):
     _name = 'period'
     _description = 'Period'
 
     name = fields.Char(string='Name')
+    seconds = fields.Integer(
+        string='Seconds',
+        translate=True)
+    minutes = fields.Integer(
+        string='Minutes',
+        translate=True)
+    hours = fields.Integer(
+        string='Hours',
+        translate=True)
     days = fields.Integer(
         string='Days',
+        translate=True)
+    weeks = fields.Integer(
+        string='Weeks',
         translate=True)
     months = fields.Integer(
         string='Months',
@@ -40,51 +48,17 @@ class Period(models.Model):
     years = fields.Integer(
         string='Years',
         translate=True)
-    hours = fields.Integer(
-        string='Hours',
-        translate=True)
-    minutes = fields.Integer(
-        string='Minutes',
-        translate=True)
-    seconds = fields.Integer(
-        string='Seconds',
-        translate=True)
 
+    @api.multi
+    def next(self, date):
+        if isinstance(date, str):
+            date = fields.Datetime.from_string(date)
 
-### Funcionalidades referentes al periodo para otras clases
-# import datetime
-# class MoDel(models.Model):
-#     _name = 'mo.del'
-#     _description = 'Model description'
-
-#     @api.multi
-#     def get_days_between_month(self, date_str):
-#         # Obtener los dias necesarios para que cuadre el dia
-#         date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
-#         carry, new_month = divmod(date.month-1+1, 12)
-#         new_month += 1
-#         date_init = date
-#         try:
-#             date = date.replace(year=date.year+carry, month=new_month)
-#         except:
-#             last_day = calendar.monthrange(date.year, new_month)[1]
-#             date = date.replace(
-#                 year=date.year+carry, month=new_month, day=last_day)
-#         return (date-date_init).days
-
-#     @api.multi
-#     def get_period_days(self, date_str, period):
-#         # Pasar el periodo a dias
-#         total_days = 0
-#         if period.days:
-#             total_days += period.days
-#         if period.months:
-#             total_days +=\
-#                 period.months * self.get_days_between_month(date_str)
-#         if period.years:
-#             total_days += period.years*365
-#             # @ TODO Hacerlo mismo o parecido con years (365 o 366)
-#             # total_days +=\
-#             #   self.period_id.months*self.get_days_between_month(date_str)
-#         return total_days
-
+        return date + relativedelta(
+            years=self.years,
+            months=self.months,
+            days=self.days,
+            weeks=self.weeks,
+            hours=self.hours,
+            minutes=self.minutes,
+            seconds=self.seconds)

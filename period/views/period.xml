@@ -14,6 +14,7 @@
                     <field name="minutes"/>
                     <field name="seconds"/>
                     <field name="days"/>
+                    <field name="weeks"/>
                     <field name="months"/>
                     <field name="years"/>
                 </tree>
@@ -30,6 +31,7 @@
                     <field name="minutes"/>
                     <field name="seconds"/>
                     <field name="days"/>
+                    <field name="weeks"/>
                     <field name="months"/>
                     <field name="years"/>
                     <newline />
@@ -55,6 +57,7 @@
                                         <field name="minutes"/>
                                         <field name="seconds"/>
                                         <field name="days"/>
+                                        <field name="weeks"/>
                                         <field name="months"/>
                                         <field name="years"/>
                                     </group>
