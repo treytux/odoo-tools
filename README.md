@@ -21,3 +21,7 @@ Permite gestionar avisos de mensajería automáticos dentro de odoo para crm.
 ```period ```
 ====
 Permite gestionar periodos.
+
+```hangout ```
+====
+Permite realizar envios de mensajes a la plataforma Hangout
