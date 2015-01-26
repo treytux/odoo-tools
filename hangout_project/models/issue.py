@@ -38,7 +38,7 @@ class ProjectIssue(models.Model):
 
         try:
             for m in self.message_ids:
-                if self.message_ids[1].author_id.company_id != self.company_id:
-                    self.company_id.hangoutSendMessage('%s' % m.body)
+                if m.type == 'email':
+                    self.company_id.hangoutSendMessage(cleanhtml('%s' % m.body))
         except Exception as e:
             _log.error('When notify issue to Hangout: %s' % e)
