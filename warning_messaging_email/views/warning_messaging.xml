@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="form_warning_messaging_attachment" model="ir.ui.view">
+             <field name="name">form_warning_messaging_attachment</field>
+            <field name="model">warning.messaging</field>
+            <field name="inherit_id" ref="warning_messaging.form_warning_messaging" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='body']" position="after">
+                    <field name="email_tmpl_id" domain="[('model_id','=',model_id)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
