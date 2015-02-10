@@ -54,6 +54,17 @@ class WarningMessaging(models.Model):
                             cr, uid, self.email_tmpl_id.id, obj.id,
                             force_send=True, raise_exception=True,
                             context=context)
+
+                        # Notificar en el registro que se ha enviado el
+                        # correo
+                        partner_ids = [obj.user_id and obj.user_id.partner_id
+                                       and obj.user_id.partner_id.id] or []
+                        body = 'Mail sent to partner from warning \'%s\'.'\
+                            % self.name
+                        obj.with_context(
+                            mail_post_autofollow=False).message_post(
+                            body=body, partner_ids=partner_ids)
+
                         return True
 
                 else:
