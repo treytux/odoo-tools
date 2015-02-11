@@ -51,10 +51,10 @@
                                 <field name="cron_id"/>
                             </group>
                         </group>
-                        <group colspan="4" string="Condiciones">
+                        <group colspan="4" string="Conditions">
                             <field name="condition_ids" nolabel="1"/>
                         </group>
-                        <group colspan="4" string="Acciones">
+                        <group colspan="4" string="Actions">
                             <field name="action_ids" nolabel="1"/>
                         </group>
                     </group>
