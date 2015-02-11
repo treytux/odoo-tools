@@ -30,6 +30,58 @@ class WarningMessaging(models.Model):
     email_tmpl_id = fields.Many2one(
         comodel_name='email.template',
         string='Email Template')
+    email_type = fields.Selection(
+        selection=[
+            ('with_template', 'With template'),
+            ('without_template', 'Without template'),
+        ],
+        string='Email type',
+        default='with_template',
+        required=True)
+    email_subject = fields.Char(string='Email subject')
+    email_body_html = fields.Char(string='Email body html')
+    email_attachment_ids = fields.Many2many(
+        comodel_name='ir.attachment',
+        relation='warning_mess_attach_rel',
+        column1='warning_mess_id',
+        column2='attachment_id')
+
+    @api.multi
+    def send_mail_without_template(self, email_to):
+        ''' Send a mail without template to email address indicated in
+        'email_to'.'''
+        cr, uid, context = self.env.args
+
+        # 1 - Crear objeto mail.message (mail_message_id)
+        email_from = self.env['ir.mail_server'].search(
+            [('active', '=', True)])
+        if not email_from:
+            raise exceptions.Warning(_(
+                'Not exist any mail in active state, the email can not sent.'))
+
+        data_msg = {
+            'subject': self.email_subject or '',
+            'type': 'email',
+            'email_from': email_from.smtp_user,
+            'attachment_ids': [(6, 0, [attach.id for attach in
+                                self.email_attachment_ids])]
+        }
+        mail_message = self.env['mail.message'].create(data_msg)
+
+        # 2 - Crear objeto mail.mail (mail_id) y asignarle el mail_message_id
+        mail_mail = self.env['mail.mail']
+        data_mail = {
+            'mail_message_id': mail_message.id,
+            'body_html': self.email_body_html or '',
+            'email_to': email_to
+        }
+        mail = mail_mail.create(data_mail)
+
+        # 3 - Llamar a funcion send con ids = mail.id
+        # Hay que llamar a send con la api antigua
+        self.pool.get('mail.mail').send(cr, uid, [mail.id])
+
+        return True
 
     @api.one
     def do_send_email(self, objs):
@@ -38,9 +90,19 @@ class WarningMessaging(models.Model):
                 if hasattr(obj, 'message_post'):
                     # Si el aviso no tiene plantilla asignada
                     if not self.email_tmpl_id.exists():
-                        # @TODO Envia correo sin plantilla
-                        raise exceptions.Warning(
-                            _('@TODO Envia correo sin plantilla'))
+                        email_to = obj.partner_id and obj.partner_id.email\
+                            or None
+                        self.send_mail_without_template(email_to)
+
+                        # Notificar en el registro que se ha enviado el
+                        # correo
+                        partner_ids = [obj.user_id and obj.user_id.partner_id
+                                       and obj.user_id.partner_id.id] or []
+                        body = 'Mail sent to partner from warning \'%s\'.'\
+                            % self.name
+                        obj.with_context(
+                            mail_post_autofollow=False).message_post(
+                            body=body, partner_ids=partner_ids)
 
                     # Si el aviso tiene plantilla asignada
                     else:

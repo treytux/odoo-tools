@@ -69,6 +69,34 @@
             <field name="price_unit">2950.00</field>
         </record>
 
+        <!-- AVISO 2 -->
+        <!-- Aviso presupuesto borrador -->
+        <record id="warning_messaging_2" model="warning.messaging">
+            <field name="name">Aviso presupuesto borrador sin plantilla</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="body">[AVISO] El presupuesto esta en borrador.</field>
+        </record>
+        <!-- CONDICIONES -->
+        <!-- Estado 'Presupuesto' -->
+        <record id="warning_condition_2" model="warning.condition">
+            <field name="name">Estado presupuesto</field>
+            <field name="warning_id" ref="warning_messaging_2"/>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <!-- @TODO Lo asignare en los tests con python -->
+            <field name="field_id" eval="1"/>
+            <field name="condition">=</field>
+            <field name="value">'draft'</field>
+        </record>
+        <!-- ACCIONES -->
+        <!-- Envio de correo a usuario -->
+        <record id="warning_action_2" model="warning.action">
+            <field name="name">Envio de correo sni plantilla a usuario</field>
+            <field name="warning_id" ref="warning_messaging_2"/>
+            <field name="ttype">send_email</field>
+            <field name="active">True</field>
+        </record>
+
+
     </data>
 </openerp>
 

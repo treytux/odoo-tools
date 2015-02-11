@@ -8,7 +8,19 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='body']" position="after">
-                    <field name="email_tmpl_id" domain="[('model_id','=',model_id)]"/>
+                    <field name="email_type"/>
+                    <group col="4" colspan="4" attrs="{'invisible':[('email_type','!=','with_template')]}">
+                        <field name="email_tmpl_id" domain="[('model_id','=',model_id)]" attrs="{'required':[('email_type','=','with_template')]}"/>
+                    </group>
+                    <group col="4" colspan="4" attrs="{'invisible':[('email_type','!=','without_template')]}">
+                        <group>
+                            <field name="email_subject" attrs="{'required':[('email_type','=','without_template')]}"/>
+                            <field name="email_body_html" attrs="{'required':[('email_type','=','without_template')]}" widget="html"/>
+                            <group colspan="4" string="Attachments">
+                                <field name="email_attachment_ids" nolabel="1"/>
+                            </group>
+                        </group>
+                    </group>
                 </xpath>
             </field>
         </record>
