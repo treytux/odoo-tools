@@ -42,27 +42,22 @@
                         <button name="to_inactive" states="active" string="To inactive" type="object" groups="base.group_user"/>
                         <field name="state" widget="statusbar" statusbar_visible="active, inactive" statusbar_colors='{"inactive":"blue","active":"red"}'/>
                     </header>
-                     <sheet string="Warning messaging Sheet">
-                        <notebook>
-                            <page name="information" string="Information">
-                                <group colspan="4">
-                                    <group>
-                                        <field name="name"/>
-                                        <field name="model_id"/>
-                                        <field name="body"/>
-                                        <field name="cron_id"/>
-                                    </group>
-                                </group>
-                                <group colspan="4" string="Condiciones">
-                                    <field name="condition_ids" nolabel="1"/>
-                                </group>
-                                <group colspan="4" string="Acciones">
-                                    <field name="action_ids" nolabel="1"/>
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
-
+                    <group col="4" colspan="4">
+                        <group colspan="4">
+                            <group>
+                                <field name="name"/>
+                                <field name="model_id"/>
+                                <field name="body"/>
+                                <field name="cron_id"/>
+                            </group>
+                        </group>
+                        <group colspan="4" string="Condiciones">
+                            <field name="condition_ids" nolabel="1"/>
+                        </group>
+                        <group colspan="4" string="Acciones">
+                            <field name="action_ids" nolabel="1"/>
+                        </group>
+                    </group>
                 </form>
             </field>
         </record>
@@ -114,22 +109,15 @@
             <field name="model">warning.condition</field>
             <field name="arch" type="xml">
                 <form string="Warning condition">
-                    <sheet string="Warning condition Sheet">
-                        <notebook>
-                            <page name="information" string="Information">
-                                <group colspan="4">
-                                    <group>
-                                        <field name="name"/>
-                                        <field name="model_id"/>
-                                        <field name="field_id" domain="[('model_id', '=', model_id)]"/>
-                                        <field name="condition"/>
-                                        <field name="value"/>
-                                    </group>
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
-
+                    <group col="4" colspan="4">
+                        <group colspan="4">
+                            <field name="name"/>
+                            <field name="model_id"/>
+                            <field name="field_id" domain="[('model_id', '=', model_id)]"/>
+                            <field name="condition"/>
+                            <field name="value"/>
+                        </group>
+                    </group>
                 </form>
             </field>
         </record>
@@ -177,20 +165,13 @@
             <field name="model">warning.action</field>
             <field name="arch" type="xml">
                 <form string="Warning action">
-                    <sheet string="Warning action Sheet">
-                        <notebook>
-                            <page name="information" string="Information">
-                                <group colspan="4">
-                                    <group>
-                                        <field name="name"/>
-                                        <field name="ttype"/>
-                                        <field name="active"/>
-                                    </group>
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
-
+                    <group col="4" colspan="4">
+                        <group colspan="4">
+                            <field name="name"/>
+                            <field name="ttype"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
                 </form>
             </field>
         </record>
