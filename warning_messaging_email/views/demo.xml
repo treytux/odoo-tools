@@ -24,9 +24,9 @@
         </record>
 
         <!-- AVISO 1 -->
-        <!-- Aviso presupuesto borrador -->
+        <!-- Aviso presupuesto borrador con plantilla -->
         <record id="warning_messaging_1" model="warning.messaging">
-            <field name="name">Aviso presupuesto borrador</field>
+            <field name="name">Aviso presupuesto borrador con plantilla</field>
             <field name="model_id" ref="sale.model_sale_order"/>
             <field name="body">[AVISO] El presupuesto esta en borrador.</field>
         </record>
@@ -70,7 +70,7 @@
         </record>
 
         <!-- AVISO 2 -->
-        <!-- Aviso presupuesto borrador -->
+        <!-- Aviso presupuesto borrador sin plantilla -->
         <record id="warning_messaging_2" model="warning.messaging">
             <field name="name">Aviso presupuesto borrador sin plantilla</field>
             <field name="model_id" ref="sale.model_sale_order"/>

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 10:52+0000\n"
-"PO-Revision-Date: 2015-02-11 11:55+0100\n"
+"POT-Creation-Date: 2015-02-12 13:00+0000\n"
+"PO-Revision-Date: 2015-02-12 14:06+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,6 +45,13 @@ msgstr "Asunto del correo"
 #: field:warning.messaging,email_type:0
 msgid "Email type"
 msgstr "Tipo de correo"
+
+#. module: warning_messaging_email
+#: code:addons/warning_messaging_email/models/warning.py:104
+#: code:addons/warning_messaging_email/models/warning.py:127
+#, python-format
+msgid "Mail sent to partner from warning '%s'."
+msgstr "Correo enviado a la empresa desde el aviso '%s'."
 
 #. module: warning_messaging_email
 #: code:addons/warning_messaging_email/models/warning.py:59

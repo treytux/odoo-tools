@@ -98,8 +98,8 @@ class WarningMessaging(models.Model):
                         # correo
                         partner_ids = [obj.user_id and obj.user_id.partner_id
                                        and obj.user_id.partner_id.id] or []
-                        body = 'Mail sent to partner from warning \'%s\'.'\
-                            % self.name
+                        body = _('Mail sent to partner from warning \'%s\'.'
+                                 % self.name)
                         obj.with_context(
                             mail_post_autofollow=False).message_post(
                             body=body, partner_ids=partner_ids)
@@ -121,8 +121,8 @@ class WarningMessaging(models.Model):
                         # correo
                         partner_ids = [obj.user_id and obj.user_id.partner_id
                                        and obj.user_id.partner_id.id] or []
-                        body = 'Mail sent to partner from warning \'%s\'.'\
-                            % self.name
+                        body = _('Mail sent to partner from warning \'%s\'.'
+                                 % self.name)
                         obj.with_context(
                             mail_post_autofollow=False).message_post(
                             body=body, partner_ids=partner_ids)
