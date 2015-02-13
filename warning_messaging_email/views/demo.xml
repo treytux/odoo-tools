@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <!-- Usuario test_user -->
-        <record id="res_partner_sale_0" model="res.partner">
-            <field name="name">test_user_sale</field>
+        <!-- Usuario test_user_sale1 -->
+        <record id="res_partner_sale_1" model="res.partner">
+            <field name="name">test_user_sale1</field>
             <field name="customer" eval="False"/>
-            <field name="email">test_user_sale@prueba.com</field>
+            <field name="email">test_user_sale1@prueba.com</field>
         </record>
         <record id="res_users_0" model="res.users">
-            <field name="name">test_user_sale</field>
-            <field name="login">test_user_sale</field>
+            <field name="name">test_user_sale1</field>
+            <field name="login">test_user_sale1</field>
             <field name="password">a</field>
             <!-- <field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman_all_leads')])]"/> -->
-            <field name="partner_id" ref="res_partner_sale_0"/>
+            <field name="partner_id" ref="res_partner_sale_1"/>
             <field name="active" eval="True"/>
         </record>
 
@@ -46,12 +46,12 @@
         <record id="warning_action_1" model="warning.action">
             <field name="name">Envio de correo a usuario</field>
             <field name="warning_id" ref="warning_messaging_1"/>
-            <field name="ttype">send_email</field>
+            <field name="ttype">send_email_with_templ</field>
             <field name="active">True</field>
         </record>
 
         <!-- PRESUPUESTOS -->
-        <!-- Presupuesto venta en borrador. Comercial: test_user-->
+        <!-- Presupuesto venta en borrador. Comercial: test_user_sale1-->
         <record id="sale_order_1" model="sale.order">
             <field name="partner_id" ref="res_partner_sale_1"/>
             <field name="partner_invoice_id" ref="res_partner_sale_1"/>
@@ -92,7 +92,7 @@
         <record id="warning_action_2" model="warning.action">
             <field name="name">Envio de correo sni plantilla a usuario</field>
             <field name="warning_id" ref="warning_messaging_2"/>
-            <field name="ttype">send_email</field>
+            <field name="ttype">send_email_without_templ</field>
             <field name="active">True</field>
         </record>
 

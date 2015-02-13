@@ -27,31 +27,22 @@
         - type(field_id) != 'ir.model.fields'
 
 -
-    Asignar el campo email_type al aviso
+    Asignar la plantilla a la accion del aviso warning_action_1
 -
-    !python {model: warning.messaging, id: warning_messaging_1}: |
-        self.pool.get('warning.messaging').write(cr, uid, ref('warning_messaging_1'), {
-            'email_type': 'with_template',
-        })
-
--
-    Asignar el campo email_tmpl_id al aviso
--
-    !python {model: warning.messaging, id: warning_messaging_1}: |
-
+    !python {model: warning.action, id: warning_action_1}: |
+        # Buscar la plantilla de correo para sale.order
         email_tmpl_ids = self.pool.get('email.template').search(
-            cr, uid, [('name', '=', 'Sales Order - Send by Email')])
+            cr, uid, [('model', '=', 'sale.order')])
         if email_tmpl_ids:
-            self.pool.get('warning.messaging').write(cr, uid, ref('warning_messaging_1'), {
+            # Asignarla a la accion
+            self.pool.get('warning.action').write(cr, uid, ref('warning_action_1'), {
                 'email_tmpl_id': email_tmpl_ids[0],
             })
-
 -
-    Comprobar que el campo email_tmpl_id del aviso warning_messaging_1 esta relleno
+    Comprobar que el campo email_tmpl_id de la accion esta relleno
 -
-    !assert {model: warning.messaging, id: warning_messaging_1}:
+    !assert {model: warning.action, id: warning_action_1}:
         - type(email_tmpl_id) != 'email.template'
-
 
 -
     Activar aviso presupuesto en borrador
@@ -79,31 +70,6 @@
         cron = self.cron_id
         cron.with_context(active_ids=cron.id)._callback(
             cron.model, cron.function, cron.args, cron.id)
-
-# @TODO No encuentro este correo en la tabla, aunque se envia correctamente
-# -
-#     Comprobar que se ha creado el correo
-# -
-#     !python {model: sale.order, id: sale_order_1}: |
-#         from datetime import datetime
-#         import datetime as dt
-
-#         now_str = str(datetime.now())
-#         before_str = str((datetime.now() - dt.timedelta(minutes=1)))
-
-#         try:
-#             # Como el correo no se envia en los test, en lugar de buscar en la tabla mail.message, lo hacemos en mail.mail
-#             mail_mail = self.env['mail.mail'].search_count(
-#                 [('body_html', 'like', '%Here is your quotation%'),
-#                  ('create_date', '<', now_str),
-#                  ('create_date', '>', before_str),
-#                ]
-#             )
-#         except Exception as e:
-#             assert False, 'Error al hacer el search. %s' % e
-
-#         assert mail_mail > 0, 'No se ha generado el correo.'
-
 
 
 ##########################################################################################
@@ -135,20 +101,20 @@
         - type(field_id) != 'ir.model.fields'
 
 -
-    Asignar los campos email_type, email_subject, email_body_html, email_attachment_ids al aviso
+    Asignar asunto, cuerpo y adjunto a la accion del aviso warning_action_2
 -
-    !python {model: warning.messaging, id: warning_messaging_2}: |
-        # Buscar un adjunto cualquiera para asignar
+    !python {model: warning.action, id: warning_action_2}: |
+        # Buscar un adjunto
         attach_ids = self.pool.get('ir.attachment').search(
             cr, uid, [])
         attachs = None
         if attach_ids:
             attachs = [attach_ids[0]]
 
-        self.pool.get('warning.messaging').write(cr, uid, ref('warning_messaging_2'), {
-            'email_type': 'without_template',
-            'email_subject': 'Asunto prueba',
-            'email_body_html': u'''<span style="color: rgb(76, 76, 76); font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; font-size: 13px;">Cuerpo html para probar:</span><div style="color: rgb(76, 76, 76); font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; font-size: 13px;"><br></div><div style="color: rgb(76, 76, 76); font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; font-size: 13px;"><span class="Apple-tab-span" style="white-space:pre">    </span><span style="font-weight: bold;">prueba</span></div><div style="color: rgb(76, 76, 76); font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; font-size: 13px;"><span style="font-weight: bold;"><br></span></div><div><span style="font-style: italic;">Lista prueba:</span></div><div><ol><li>Punto 1</li><li>Punto 2</li><li>Punto 3</li></ol><div style="color: rgb(76, 76, 76); font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; font-size: 13px;"><span class="Apple-tab-span" style="white-space:pre"> </span></div></div>''',
+        # Asignar los valores a la accion
+        self.pool.get('warning.action').write(cr, uid, ref('warning_action_2'), {
+            'email_subject': 'Asunto de prueba',
+            'email_body_html': '..Cuerpo html para probar:..',
             'email_attachment_ids': [(6, 0, attachs)]
         })
 
