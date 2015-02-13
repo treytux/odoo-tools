@@ -32,6 +32,7 @@ Module to manage automated messaging alerts sending a email.
         'warning_messaging',
         'sale',
         'portal_sale',
+        'account',
     ],
     'data': [
         'views/warning_messaging.xml',

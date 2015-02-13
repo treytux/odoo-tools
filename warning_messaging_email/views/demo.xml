@@ -90,12 +90,78 @@
         <!-- ACCIONES -->
         <!-- Envio de correo a usuario -->
         <record id="warning_action_2" model="warning.action">
-            <field name="name">Envio de correo sni plantilla a usuario</field>
+            <field name="name">Envio de correo sin plantilla a usuario</field>
             <field name="warning_id" ref="warning_messaging_2"/>
             <field name="ttype">send_email_without_templ</field>
             <field name="active">True</field>
         </record>
 
+        <!-- FACTURA -->
+        <!-- Factura para partner res_partner_sale_1-->
+        <!-- @TODO Al crear la factura por aqui da error, asi que la crearemos desde el fichero de test -->
+
+<!--         <record id="invoice_1" model="account.invoice">
+            <field name="currency_id" ref="base.EUR"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="partner_id" ref="res_partner_sale_1"/>
+            <field name="journal_id" ref="account.sales_journal"/>
+            <field name="state">draft</field>
+            <field name="type">in_invoice</field>
+            <field name="account_id" ref="account.a_recv"/>
+            <field name="name">Invoice 1</field>
+        </record>
+
+        <record id="tax_line" model="account.invoice.tax">
+            <field name="name">Tax</field>
+            <field name="base">5.00</field>
+            <field name="amount">100.00</field>
+            <field name="account_id" ref="account.ova"/>
+            <field name="invoice_id" ref="invoice_1"/>
+        </record>
+        <record id="invoice_1_line_1" model="account.invoice.line">
+            <field name="name">Service 1</field>
+            <field name="invoice_id" ref="invoice_1"/>
+            <field name="price_unit">250</field>
+            <field name="quantity">1</field>
+            <field name="account_id" ref="account.a_sale"/>
+        </record>
+ -->
+        <!-- AVISO 3 -->
+        <!-- Aviso factura impagada (en proforma mas de 15 dias) -->
+        <record id="warning_messaging_3" model="warning.messaging">
+            <field name="name">Aviso factura impagada (en proforma mas de 15 dias)</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="body">[AVISO] Factura impagada.</field>
+        </record>
+        <!-- CONDICIONES -->
+        <!-- Estado 'proforma' -->
+        <record id="warning_condition_3" model="warning.condition">
+            <field name="name">Estado proforma</field>
+            <field name="warning_id" ref="warning_messaging_3"/>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <!-- @TODO Lo asignare en los tests con python -->
+            <field name="field_id" eval="1"/>
+            <field name="condition">=</field>
+            <field name="value">'proforma2'</field>
+        </record>
+        <!-- Lleva 15 dias sin modificaciones -->
+        <record id="warning_condition_4" model="warning.condition">
+            <field name="name">15 dias sin modificaciones</field>
+            <field name="warning_id" ref="warning_messaging_3"/>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <!-- @TODO Lo asignare en los tests con python -->
+            <field name="field_id" eval="1"/>
+            <field name="condition">&lt;</field>
+            <field name="value">(datetime.datetime.now() - datetime.timedelta(days=15)).strftime('%Y-%m-%d %H:%M:%S')</field>
+        </record>
+        <!-- ACCIONES -->
+        <!-- Envio de correo a usuario sin plantilla-->
+        <record id="warning_action_3" model="warning.action">
+            <field name="name">Envio de correo sin plantilla a usuario</field>
+            <field name="warning_id" ref="warning_messaging_3"/>
+            <field name="ttype">send_email_without_templ</field>
+            <field name="active">True</field>
+        </record>
 
     </data>
 </openerp>
