@@ -96,8 +96,7 @@ class WarningAction(models.Model):
         required=True)
     active = fields.Boolean(
         string='Active',
-        default=True,
-        required=True)
+        default=True)
     warning_id = fields.Many2one(
         comodel_name='warning.messaging',
         string='Warning message',
