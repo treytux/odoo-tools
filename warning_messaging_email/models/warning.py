@@ -167,8 +167,8 @@ class WarningAction(models.Model):
                     data['warning_id'])
                 if email_tmpl.model_id != warning_msg.model_id:
                     raise exceptions.Warning(
-                        _('You must select an email template with the same model '
-                          'of the current warning.'))
+                        _('You must select an email template with the same '
+                          'model of the current warning.'))
         return super(WarningAction, self).create(data)
 
     @api.multi

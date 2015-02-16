@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-12 13:00+0000\n"
-"PO-Revision-Date: 2015-02-12 14:06+0100\n"
+"POT-Creation-Date: 2015-02-16 09:34+0000\n"
+"PO-Revision-Date: 2015-02-16 10:36+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,44 +17,39 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: warning_messaging_email
-#: view:warning.messaging:warning_messaging_email.form_warning_messaging_email
+#: view:warning.action:warning_messaging_email.form_warning_action_email
 msgid "Attachments"
 msgstr "Adjuntos"
 
 #. module: warning_messaging_email
-#: field:warning.messaging,email_tmpl_id:0
+#: field:warning.action,email_tmpl_id:0
 msgid "Email Template"
 msgstr "Plantilla de correo"
 
 #. module: warning_messaging_email
-#: field:warning.messaging,email_attachment_ids:0
+#: field:warning.action,email_attachment_ids:0
 msgid "Email attachment ids"
-msgstr "ids plantillas de correo"
+msgstr "Ids adjuntos correo"
 
 #. module: warning_messaging_email
-#: field:warning.messaging,email_body_html:0
+#: field:warning.action,email_body_html:0
 msgid "Email body html"
 msgstr "Cuerpo html del correo"
 
 #. module: warning_messaging_email
-#: field:warning.messaging,email_subject:0
+#: field:warning.action,email_subject:0
 msgid "Email subject"
-msgstr "Asunto del correo"
+msgstr "Asunto correo"
 
 #. module: warning_messaging_email
-#: field:warning.messaging,email_type:0
-msgid "Email type"
-msgstr "Tipo de correo"
-
-#. module: warning_messaging_email
-#: code:addons/warning_messaging_email/models/warning.py:104
-#: code:addons/warning_messaging_email/models/warning.py:127
+#: code:addons/warning_messaging_email/models/warning.py:82
+#: code:addons/warning_messaging_email/models/warning.py:114
 #, python-format
 msgid "Mail sent to partner from warning '%s'."
 msgstr "Correo enviado a la empresa desde el aviso '%s'."
 
 #. module: warning_messaging_email
-#: code:addons/warning_messaging_email/models/warning.py:59
+#: code:addons/warning_messaging_email/models/warning.py:40
 #, python-format
 msgid "Not exist any mail in active state, the email can not sent."
 msgstr ""
@@ -71,11 +66,12 @@ msgid "Warning messaging"
 msgstr "Mensajes de aviso"
 
 #. module: warning_messaging_email
-#: selection:warning.messaging,email_type:0
-msgid "With template"
-msgstr "Con plantilla"
-
-#. module: warning_messaging_email
-#: selection:warning.messaging,email_type:0
-msgid "Without template"
-msgstr "Sin plantilla"
+#: code:addons/warning_messaging_email/models/warning.py:170
+#: code:addons/warning_messaging_email/models/warning.py:185
+#: view:warning.action:warning_messaging_email.form_warning_action_email
+#, python-format
+msgid ""
+"You must select an email template with the same model of the current warning."
+msgstr ""
+"Debe seleccionar una plantilla de correo electrónico con el mismo modelo del "
+"aviso actual."
