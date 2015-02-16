@@ -10,12 +10,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='ttype']" position="after">
                     <group colspan="4" attrs="{'invisible':[('ttype','!=','send_email_with_templ')]}">
-
-                    <!-- @TODO Arreglar para que filtre por el modelo del aviso -->
-<!--                         <field name="email_tmpl_id" domain="[('model_id','=',warning_id.model_id)]" attrs="{'required':[('ttype','=','send_email_with_templ')]}"/>
- -->
-
-                    <field name="email_tmpl_id" attrs="{'required':[('ttype','=','send_email_with_templ')]}"/>
+                        <separator string="You must select an email template with the same model of the current warning."/>
+                        <field name="email_tmpl_id" attrs="{'required':[('ttype','=','send_email_with_templ')]}"/>
                     </group>
                     <group colspan="4" attrs="{'invisible':[('ttype','!=','send_email_without_templ')]}">
                         <field name="email_subject" attrs="{'required':[('ttype','=','send_email_without_templ')]}"/>

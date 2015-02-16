@@ -151,3 +151,36 @@ class WarningAction(models.Model):
         for option in options:
             if option not in type_selection:
                 type_selection.append(option)
+
+    @api.model
+    def create(self, data):
+        # Si la accion es de tipo correo con plantilla, comprobar que el
+        # modelo de la plantilla coincide con el modelo del aviso
+        if 'ttype' in data and data['ttype'] == 'send_email_with_templ':
+            # Comprobar si la accion tiene asignada plantilla.
+            # Si es asi, obtener el modelo de la accion y comprararlo con el
+            # modelo del aviso
+            if 'email_tmpl_id' in data and 'warning_id' in data:
+                email_tmpl = self.env['email.template'].browse(
+                    data['email_tmpl_id'])
+                warning_msg = self.env['warning.messaging'].browse(
+                    data['warning_id'])
+                if email_tmpl.model_id != warning_msg.model_id:
+                    raise exceptions.Warning(
+                        _('You must select an email template with the same model '
+                          'of the current warning.'))
+        return super(WarningAction, self).create(data)
+
+    @api.multi
+    def write(self, vals):
+        res = super(WarningAction, self).write(vals)
+        if not res:
+            return res
+        else:
+            # Si la accion es de tipo correo con plantilla, comprobar que el
+            # modelo de la plantilla coincide con el modelo del aviso
+            if self.ttype == 'send_email_with_templ' and\
+               self.email_tmpl_id.model_id != self.warning_id.model_id:
+                raise exceptions.Warning(
+                    _('You must select an email template with the same model '
+                      'of the current warning.'))
