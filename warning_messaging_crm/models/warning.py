@@ -111,7 +111,7 @@ class WarningAction(models.Model):
             ('create_meeting', 'Create meeting'),
             ('create_opportunity', 'Create opportunity'),
         ]
-        type_selection = self._columns['ttype'].selection
+        type_selection = self._fields['ttype'].selection
 
         for option in options:
             if option not in type_selection:
