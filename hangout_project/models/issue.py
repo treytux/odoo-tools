@@ -34,15 +34,18 @@ class ProjectIssue(models.Model):
             raw_html = raw_html.replace('</p>', '\n').replace('<p/>', '\n')
             cleanr = re.compile('<.*?>')
             cleantext = re.sub(cleanr, '', raw_html)
-            return cleantext
+            return cleantext.strip()
 
         try:
+            message = None
             for m in self.message_ids:
                 if m.type == 'email':
-                    self.company_id.hangoutSendMessage('''Project issue: %s
-From: %s
-Subject: %s
-
-%s''' % (self.id, m.author_id.email, m.subject, cleanhtml('%s' % m.body)))
+                    if (message and m.date < message.date) or not message:
+                        message = m
+            if message:
+                self.company_id.hangoutSendMessage('''(%s) %s
+%s''' % (message.author_id.email, 
+         message.subject, 
+         cleanhtml('%s' % message.body)[:200]))
         except Exception as e:
             _log.error('When notify issue to Hangout: %s' % e)

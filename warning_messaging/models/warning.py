@@ -96,8 +96,7 @@ class WarningAction(models.Model):
         required=True)
     active = fields.Boolean(
         string='Active',
-        default=True,
-        required=True)
+        default=True)
     warning_id = fields.Many2one(
         comodel_name='warning.messaging',
         string='Warning message',
@@ -218,7 +217,7 @@ class WarningMessaging(models.Model):
                     method = 'do_%s' % action.ttype
                     if hasattr(self, method):
                         fnc = getattr(self, method)
-                        fnc(objs)
+                        fnc(objs, action)
                     else:
                         _log.error('Unknow action type %s for '
                                    'warning %s' % (action.ttype, self.name))
@@ -226,7 +225,7 @@ class WarningMessaging(models.Model):
             _log.error('Warning "%s" not satisfied conditions' % (self.name))
 
     @api.one
-    def do_send_msg(self, objs):
+    def do_send_msg(self, objs, action):
         try:
             for obj in objs:
                 if hasattr(obj, 'message_post'):

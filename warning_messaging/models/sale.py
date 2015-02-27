@@ -25,7 +25,7 @@ class WarningMessaging(models.Model):
     _inherit = 'warning.messaging'
 
     @api.one
-    def do_send_msg(self, objs):
+    def do_send_msg(self, objs, action):
         if self.model_id.name == 'sale.order':
             for order in objs:
                 partner_ids = [order.user_id and order.user_id.partner_id and
@@ -35,4 +35,4 @@ class WarningMessaging(models.Model):
                     body=self.body, partner_ids=partner_ids)
             return True
         else:
-            return super(WarningMessaging, self).do_send_msg(objs)
+            return super(WarningMessaging, self).do_send_msg(objs, action)
