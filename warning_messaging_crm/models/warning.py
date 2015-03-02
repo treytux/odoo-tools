@@ -29,7 +29,7 @@ class WarningMessaging(models.Model):
     _inherit = 'warning.messaging'
 
     @api.one
-    def do_send_msg(self, objs):
+    def do_send_msg(self, objs, action):
         if self.model_id.name == 'crm.lead':
             for crm_lead in objs:
                 partner_ids = [crm_lead.user_id and crm_lead.user_id.partner_id
@@ -39,10 +39,10 @@ class WarningMessaging(models.Model):
                     body=self.body, partner_ids=partner_ids)
             return True
         else:
-            return super(WarningMessaging, self).do_send_msg(objs)
+            return super(WarningMessaging, self).do_send_msg(objs, action)
 
     @api.one
-    def do_create_call(self, objs):
+    def do_create_call(self, objs, action):
         if self.model_id.name == 'sale.order':
             for sale_order in objs:
                 self.env['crm.phonecall'].create({
@@ -57,7 +57,7 @@ class WarningMessaging(models.Model):
         return True
 
     @api.one
-    def do_create_meeting(self, objs):
+    def do_create_meeting(self, objs, action):
         if self.model_id.name == 'sale.order':
             for sale_order in objs:
                 # @TODO Para cuando hay que planificar la reunion?
@@ -84,7 +84,7 @@ class WarningMessaging(models.Model):
         return True
 
     @api.one
-    def do_create_opportunity(self, objs):
+    def do_create_opportunity(self, objs, action):
         if self.model_id.name == 'sale.order':
             for sale_order in objs:
                 self.env['crm.lead'].create({
@@ -111,7 +111,7 @@ class WarningAction(models.Model):
             ('create_meeting', 'Create meeting'),
             ('create_opportunity', 'Create opportunity'),
         ]
-        type_selection = self._columns['ttype'].selection
+        type_selection = self._fields['ttype'].selection
 
         for option in options:
             if option not in type_selection:

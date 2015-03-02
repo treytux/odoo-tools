@@ -18,24 +18,30 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from openerp import models, api
-import logging
-
-_log = logging.getLogger(__name__)
-
-
-class WarningMessaging(models.Model):
-    _inherit = 'warning.messaging'
-
-    @api.one
-    def do_send_msg(self, objs, action):
-        if self.model_id.name == 'sale.order':
-            for order in objs:
-                partner_ids = [order.user_id and order.user_id.partner_id and
-                               order.user_id.partner_id.id] or []
-
-                order.with_context(mail_post_autofollow=False).message_post(
-                    body=self.body, partner_ids=partner_ids)
-            return True
-        else:
-            return super(WarningMessaging, self).do_send_msg(objs, action)
+{
+    'name': 'warning_messaging_email',
+    'category': 'Warning',
+    'summary': 'Warning messaging email',
+    'version': '0.1',
+    'description': """
+Module to manage automated messaging alerts sending a email.
+    """,
+    'author': 'Trey Kilobytes de Soluciones (www.trey.es)',
+    'depends': [
+        'base',
+        'warning_messaging',
+        'sale',
+        'portal_sale',
+        'account',
+    ],
+    'data': [
+        'views/warning_messaging.xml',
+    ],
+    'demo': [
+        'views/demo.xml',
+    ],
+    'test': [
+        'test/warning_messaging.yml',
+    ],
+    'installable': True,
+}
