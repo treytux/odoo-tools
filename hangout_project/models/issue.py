@@ -32,10 +32,11 @@ class ProjectIssue(models.Model):
     @api.one
     def hangout_notify(self):
         def cleanhtml(raw_html):
-            raw_html = raw_html.replace('<br/>', '\n').replace('<br>', '\n')
-            raw_html = raw_html.replace('</p>', '\n').replace('<p/>', '\n')
+            # raw_html = raw_html.replace('<br/>', '\n').replace('<br>', '\n')
+            # raw_html = raw_html.replace('</p>', '\n').replace('<p/>', '\n')
             cleanr = re.compile('<.*?>')
             cleantext = re.sub(cleanr, '', raw_html)
+            cleantext = cleantext.replace('\n', ' ').replace('\r', '')
             return cleantext.strip()
 
         # Componer la URL
@@ -53,7 +54,7 @@ class ProjectIssue(models.Model):
             message = None
             for m in self.message_ids:
                 if m.type == 'email':
-                    if (message and m.date < message.date) or not message:
+                    if (message and m.date > message.date) or not message:
                         message = m
             if message:
                 self.company_id.hangoutSendMessage('''(%s) %s\n%s\n%s''' % (
