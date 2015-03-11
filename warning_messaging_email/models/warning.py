@@ -140,17 +140,20 @@ class WarningAction(models.Model):
         column1='warning_mess_id',
         column2='attachment_id')
 
-    # Anadir valores a campo selection
-    def __init__(self, pool, cr):
-        super(WarningAction, self).__init__(pool, cr)
+    @api.model
+    def _setup_fields(self):
+        '''Anadir valores a campo selection.'''
+        res = super(WarningAction, self)._setup_fields()
+
         options = [
             ('send_email_with_templ', 'Send email with template'),
-            ('send_email_without_templ', 'Send email without template')]
-        type_selection = self._columns['ttype'].selection
-
+            ('send_email_without_templ', 'Send email without template')
+        ]
         for option in options:
-            if option not in type_selection:
-                type_selection.append(option)
+            if 'ttype' in self._fields and \
+               option not in self._fields['ttype'].selection:
+                    self._fields['ttype'].selection.append(option)
+        return res
 
     @api.model
     def create(self, data):

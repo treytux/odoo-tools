@@ -24,7 +24,7 @@
     'summary': 'Warning messaging email',
     'version': '0.1',
     'description': """
-Module to manage automated messaging alerts sending a email.
+_(Module to manage automated messaging alerts sending a email.)
     """,
     'author': 'Trey Kilobytes de Soluciones (www.trey.es)',
     'depends': [

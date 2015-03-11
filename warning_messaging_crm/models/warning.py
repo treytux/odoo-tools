@@ -103,16 +103,19 @@ class WarningMessaging(models.Model):
 class WarningAction(models.Model):
     _inherit = 'warning.action'
 
-    # Anadir valores a campo selection
-    def __init__(self, pool, cr):
-        super(WarningAction, self).__init__(pool, cr)
+    @api.model
+    def _setup_fields(self):
+        '''Anadir valores a campo selection.'''
+        res = super(WarningAction, self)._setup_fields()
+
         options = [
             ('create_call', 'Create call phone'),
             ('create_meeting', 'Create meeting'),
             ('create_opportunity', 'Create opportunity'),
         ]
-        type_selection = self._fields['ttype'].selection
 
         for option in options:
-            if option not in type_selection:
-                type_selection.append(option)
+            if 'ttype' in self._fields and \
+               option not in self._fields['ttype'].selection:
+                    self._fields['ttype'].selection.append(option)
+        return res
