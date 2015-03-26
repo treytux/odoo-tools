@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from openerp import models, api
+from openerp import models, api, fields
 import datetime
 import logging
 
@@ -103,19 +103,10 @@ class WarningMessaging(models.Model):
 class WarningAction(models.Model):
     _inherit = 'warning.action'
 
-    @api.model
-    def _setup_fields(self):
-        '''Anadir valores a campo selection.'''
-        res = super(WarningAction, self)._setup_fields()
+    options = [
+        ('create_call', 'Create call phone'),
+        ('create_meeting', 'Create meeting'),
+        ('create_opportunity', 'Create opportunity'),
+    ]
 
-        options = [
-            ('create_call', 'Create call phone'),
-            ('create_meeting', 'Create meeting'),
-            ('create_opportunity', 'Create opportunity'),
-        ]
-
-        for option in options:
-            if 'ttype' in self._fields and \
-               option not in self._fields['ttype'].selection:
-                    self._fields['ttype'].selection.append(option)
-        return res
+    ttype = fields.Selection(selection_add=options)
