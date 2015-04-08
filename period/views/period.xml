@@ -47,24 +47,18 @@
             <field name="model">period</field>
             <field name="arch" type="xml">
                 <form string="Period">
-                     <sheet string="Period Sheet">
-                        <notebook>
-                            <page name="information" string="Information">
-                                <group colspan="4">
-                                    <group>
-                                        <field name="name"/>
-                                        <field name="hours"/>
-                                        <field name="minutes"/>
-                                        <field name="seconds"/>
-                                        <field name="days"/>
-                                        <field name="weeks"/>
-                                        <field name="months"/>
-                                        <field name="years"/>
-                                    </group>
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
+                    <group col="4" colspan="4">
+                        <group colspan="4">
+                            <field name="name"/>
+                            <field name="hours"/>
+                            <field name="minutes"/>
+                            <field name="seconds"/>
+                            <field name="days"/>
+                            <field name="weeks"/>
+                            <field name="months"/>
+                            <field name="years"/>
+                        </group>
+                    </group>
                 </form>
             </field>
         </record>

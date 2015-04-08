@@ -18,6 +18,10 @@ Permite gestionar avisos de mensajería automáticos dentro de odoo para pedidos
 ====
 Permite gestionar avisos de mensajería automáticos dentro de odoo para crm.
 
+```warning_messaging_email ```
+====
+Permite gestionar avisos de mensajería automáticos para envío de correos.
+
 ```period ```
 ====
 Permite gestionar periodos.
@@ -25,3 +29,7 @@ Permite gestionar periodos.
 ```hangout ```
 ====
 Permite realizar envios de mensajes a la plataforma Hangout
+
+```hangout_project ```
+====
+Permite crear acciones del servidor para emitir notificaciones
