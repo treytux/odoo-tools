@@ -1,23 +1,7 @@
 # -*- coding: utf-8 -*-
-###############################################################################
-#
-#    Trey, Kilobytes de Soluciones
-#    Copyright (C) 2014-Today Trey, Kilobytes de Soluciones <www.trey.es>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-###############################################################################
+# License, author and contributors information in:
+# __openerp__.py file at the root folder of this module.
+
 from openerp import models, api, fields, _, exceptions
 import logging
 
@@ -29,8 +13,8 @@ class WarningMessaging(models.Model):
 
     @api.multi
     def send_mail_without_template(self, email_to, action):
-        ''' Send a mail without template to email address indicated in
-        'email_to' with action values.'''
+        """ Send a mail without template to email address indicated in
+        'email_to' with action values."""
         cr, uid, context = self.env.args
 
         # 1 - Crear objeto mail.message (mail_message_id)
@@ -66,7 +50,7 @@ class WarningMessaging(models.Model):
 
     @api.one
     def do_send_email_without_templ(self, objs, action):
-        ''' Send a email without template with action values.'''
+        """ Send a email without template with action values."""
         try:
             for obj in objs:
                 if hasattr(obj, 'message_post'):
@@ -95,7 +79,7 @@ class WarningMessaging(models.Model):
 
     @api.one
     def do_send_email_with_templ(self, objs, action):
-        ''' Send a email with template defined in action.'''
+        """ Send a email with template defined in action."""
         try:
             for obj in objs:
                 if hasattr(obj, 'message_post'):
@@ -131,18 +115,24 @@ class WarningAction(models.Model):
 
     email_tmpl_id = fields.Many2one(
         comodel_name='email.template',
-        string='Email Template')
-    email_subject = fields.Char(string='Email subject')
-    email_body_html = fields.Char(string='Email body html')
+        string='Email Template'
+    )
+    email_subject = fields.Char(
+        string='Email subject'
+    )
+    email_body_html = fields.Char(
+        string='Email body html'
+    )
     email_attachment_ids = fields.Many2many(
         comodel_name='ir.attachment',
         relation='warning_mess_attach_rel',
         column1='warning_mess_id',
-        column2='attachment_id')
+        column2='attachment_id'
+    )
 
     @api.model
     def _setup_fields(self):
-        '''Anadir valores a campo selection.'''
+        """Anadir valores a campo selection."""
         res = super(WarningAction, self)._setup_fields()
 
         options = [

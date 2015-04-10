@@ -1,23 +1,7 @@
 # -*- coding: utf-8 -*-
-###############################################################################
-#
-#    Trey, Kilobytes de Soluciones
-#    Copyright (C) 2014-Today Trey, Kilobytes de Soluciones <www.trey.es>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-###############################################################################
+# License, author and contributors information in:
+# __openerp__.py file at the root folder of this module.
+
 from openerp import api, models, fields, exceptions
 import logging
 
@@ -35,41 +19,45 @@ class WarningCondition(models.Model):
     name = fields.Char(
         string='Name',
         translate=True,
-        required=True)
+        required=True
+    )
     warning_id = fields.Many2one(
         comodel_name='warning.messaging',
         string='Warning message',
-        translate=True)
+        translate=True
+    )
     model_id = fields.Many2one(
         related='warning_id.model_id',
         comodel_name='ir.model',
         string='Model',
-        required=True)
+        required=True
+    )
     field_id = fields.Many2one(
         comodel_name='ir.model.fields',
         string='Field',
-        required=True)
-    condition = fields.Selection(
-        selection=[
-            ('=', 'equal'),
-            ('!=', 'not equal'),
-            ('>', 'more than'),
-            ('=>', 'more or equal than'),
-            ('<', 'less than'),
-            ('=<', 'less or equal than'),
-            ('in', 'in'),
-            ('not in', 'not in'),
-            ('like', 'contains'),
-            ('not like', 'not contains')
-        ],
+        required=True
+    )
+    condition = fields.Selection([
+        ('=', 'equal'),
+        ('!=', 'not equal'),
+        ('>', 'more than'),
+        ('=>', 'more or equal than'),
+        ('<', 'less than'),
+        ('=<', 'less or equal than'),
+        ('in', 'in'),
+        ('not in', 'not in'),
+        ('like', 'contains'),
+        ('not like', 'not contains')],
         string='Condition',
         translate=True,
-        required=True)
+        required=True
+    )
     value = fields.Char(
         string='Value',
-        required=True)
-
+        required=True
+    )
     # Obtiene los campos del modelo 'model_id'
+
     @api.model
     def get_fields(self):
         re = []
@@ -87,20 +75,21 @@ class WarningAction(models.Model):
         string='Name',
         translate=True,
         required=True)
-    ttype = fields.Selection(
-        selection=[
-            ('send_msg', 'Send alert message'),
-        ],
+    ttype = fields.Selection([
+        ('send_msg', 'Send alert message')],
         string='Type',
         translate=True,
-        required=True)
+        required=True
+    )
     active = fields.Boolean(
         string='Active',
-        default=True)
+        default=True
+    )
     warning_id = fields.Many2one(
         comodel_name='warning.messaging',
         string='Warning message',
-        translate=True)
+        translate=True
+    )
 
 
 class WarningMessaging(models.Model):
@@ -110,44 +99,49 @@ class WarningMessaging(models.Model):
     name = fields.Char(
         string='Name',
         translate=True,
-        required=True)
+        required=True
+    )
     model_id = fields.Many2one(
         comodel_name='ir.model',
         string='Model',
         required=True,
-        translate=True)
+        translate=True
+    )
     cron_id = fields.Many2one(
         comodel_name='ir.cron',
         string='Cron Job',
         translate=True,
         readonly=True,
-        help="Scheduled Action associated.")
+        help="Scheduled Action associated."
+    )
     body = fields.Text(
         string='Body',
         translate=True,
         required=True,
-        help="Text to include in the message sent.")
-    state = fields.Selection(
-        selection=[
-            ('active', 'Active'),
-            ('inactive', 'Inactive'),
-        ],
+        help="Text to include in the message sent."
+    )
+    state = fields.Selection([
+        ('active', 'Active'),
+        ('inactive', 'Inactive')],
         string='State',
         default='inactive',
         translate=True,
-        readonly=True)
+        readonly=True
+    )
     condition_ids = fields.One2many(
         comodel_name='warning.condition',
         inverse_name='warning_id',
         string='Conditions',
         translate=True,
-        help="Conditions to be met the object registers.")
+        help="Conditions to be met the object registers."
+    )
     action_ids = fields.One2many(
         comodel_name='warning.action',
         inverse_name='warning_id',
         string='Actions',
         translate=True,
-        help="Actions to be executed if the condition are met.")
+        help="Actions to be executed if the condition are met."
+    )
 
     # Activar el aviso:
     # Comprueba si ya tiene una accion planificada asociada.
